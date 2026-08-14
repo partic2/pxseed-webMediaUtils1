@@ -1,0 +1,35 @@
+{
+    "name": "partic2/webMediaUtils1",
+    "loaders": [
+        {
+            "name": "copyFiles",
+            "include": [
+                "assets/**/*"
+            ]
+        },
+        {
+            "name": "typescript"
+        }
+    ],
+    "description": "",
+    "clean": {
+        "include": [
+            "**/*.js",
+            "assets/**/*"
+        ],
+        "excludeRegexp": [
+            "^data/"
+        ]
+    },
+    "extra": {
+        "partic2/packageManager/registry": {
+            "dependencies": [],
+            "repositories": {
+                "partic2": [
+                    "https://gitee.com/partic/pxseed-${subname}.git",
+                    "https://github.com/partic2/pxseed-${subname}.git"
+                ]
+            }
+        }
+    }
+}
