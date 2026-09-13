@@ -6,6 +6,7 @@ import * as React from 'preact'
 import {importJsQR, importModernScreenshot} from './jslib'
 import { ReactRefEx } from 'partic2/pComponentUi/domui'
 import type { WorkspaceWindowComponent } from 'partic2/pComponentUi/workspace';
+import { utf8conv } from '../CodeRunner/jsutils2';
 
 
 let __name__=requirejs.getLocalRequireModule(require);
@@ -129,7 +130,7 @@ export async function domToImageData(dom: HTMLElement): Promise<ImageData> {
 }
 
 
-export class CameraQrScanner extends React.Component<{onQr:(e:{qr:QRCode,image:ImageData})}>{
+export class CameraQrScanner extends React.Component<{onQr:(e:{qr:QRCode,image:ImageData})=>void}>{
     videoRef=new ReactRefEx<HTMLVideoElement>();
     camStream?:MediaStream;
     scanTask?:Task<void>;
@@ -171,7 +172,11 @@ export async function openWindowToScanQrWithCamera(){
     (await wnd.windowRef.waitValid() as WorkspaceWindowComponent).setMaximized(true);
     wnd.waitClose().then(()=>result.setResult(null));
     try{
-        return await result.get()
+        let t1=await result.get();
+        if(t1!=null){
+            return {qr:t1.qr,plainText:utf8conv(new Uint8Array(t1.qr.binaryData))};
+        }
+        return null;
     }finally{
         wnd.close();
     }
