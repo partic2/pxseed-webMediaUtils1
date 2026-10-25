@@ -1,12 +1,12 @@
 
 import {easyCallRemoteJsonFunction} from 'partic2/pxprpcClient/pxseedremotefuncs'
-import { WebWorker1Rpc } from 'partic2/pxprpcClient/registry';
+import { WebWorker1ForComputeRpc } from 'partic2/pxprpcClient/registry';
 import { assert, future, requirejs, sleep, Task } from 'partic2/jsutils1/base';
 import * as React from 'preact'
 import {importJsQR, importModernScreenshot} from './jslib'
 import { ReactRefEx } from 'partic2/pComponentUi/domui'
 import type { WorkspaceWindowComponent } from 'partic2/pComponentUi/workspace';
-import { utf8conv } from '../CodeRunner/jsutils2';
+import { utf8conv } from 'partic2/CodeRunner/jsutils2';
 
 
 let __name__=requirejs.getLocalRequireModule(require);
@@ -79,7 +79,7 @@ export async function __parseQrFromImageDataWorker(imageData:{data:Uint8Array,wi
     return jsqr(new Uint8ClampedArray(imageData.data.buffer,imageData.data.byteOffset,imageData.data.byteLength),imageData.width,imageData.height,{inversionAttempts:'dontInvert'});
 }
 export async function parseQrFromImageData(imageData:{data:Uint8ClampedArray,width:number,height:number}):Promise<QRCode>{
-    return easyCallRemoteJsonFunction(WebWorker1Rpc,__name__,'__parseQrFromImageDataWorker',[
+    return easyCallRemoteJsonFunction(WebWorker1ForComputeRpc,__name__,'__parseQrFromImageDataWorker',[
         {
             data:new Uint8Array(imageData.data.buffer,imageData.data.byteOffset,imageData.data.byteLength),
             width:imageData.width,height:imageData.height
